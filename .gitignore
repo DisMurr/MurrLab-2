@@ -44,4 +44,5 @@ Thumbs.db
 # Env files
 .env
 .env.*
+!/gpt-oss/gpt-oss-20b/
 !/gpt-oss/gpt-oss-20b/**
