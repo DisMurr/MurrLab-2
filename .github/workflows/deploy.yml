@@ -1,0 +1,17 @@
+name: Deploy via self-hosted runner
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Deploy script
+        run: bash deploy/cloudflare/deploy.sh

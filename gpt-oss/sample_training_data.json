@@ -1,0 +1,11 @@
+[
+  {
+    "text": "Q: What is artificial intelligence?\nA: Artificial intelligence (AI) is a branch of computer science that aims to create machines and systems capable of performing tasks that typically require human intelligence, such as learning, reasoning, problem-solving, and understanding language."
+  },
+  {
+    "text": "Q: How does machine learning work?\nA: Machine learning works by training algorithms on large datasets to identify patterns and make predictions or decisions without being explicitly programmed for each specific task. The system learns from data and improves its performance over time."
+  },
+  {
+    "text": "Q: What is deep learning?\nA: Deep learning is a subset of machine learning that uses artificial neural networks with multiple layers (hence 'deep') to model and understand complex patterns in data. It's particularly effective for tasks like image recognition, natural language processing, and speech recognition."
+  }
+]

@@ -1,0 +1,14 @@
+[Unit]
+Description=Cloudflare Tunnel: gpt-oss
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/cloudflared tunnel run gpt-oss
+Restart=always
+RestartSec=3
+User=murr
+
+[Install]
+WantedBy=multi-user.target

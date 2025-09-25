@@ -1,0 +1,20 @@
+[Unit]
+Description=GPT-OSS Responses API
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/murr/Project/gpt-oss-web
+Environment=PYTHONPATH=/home/murr/Project/gpt-oss
+Environment=GPU_MEM_CAP=18GiB
+Environment=CPU_MEM_CAP=48GiB
+Environment=OFFLOAD_DIR=/home/murr/Project/gpt-oss-web/offload
+Environment=HOST=127.0.0.1
+Environment=PORT=8000
+ExecStart=/bin/bash /home/murr/Project/gpt-oss-web/run_backend.sh
+Restart=always
+RestartSec=5
+User=murr
+
+[Install]
+WantedBy=multi-user.target

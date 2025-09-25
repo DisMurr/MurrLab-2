@@ -1,0 +1,9 @@
+# Minimal runtime dependencies
+fastapi
+uvicorn
+transformers>=4.43.0
+torch
+gradio>=4.31.0
+requests
+psutil
+nvidia-ml-py

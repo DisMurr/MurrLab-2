@@ -1,0 +1,46 @@
+# Model weights and large files
+*.safetensors
+*.bin
+*.pt
+*.pth
+
+# Local model directory
+/gpt-oss/gpt-oss-20b/
+
+# Python caches
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual envs
+.venv/
+venv/
+ENV/
+
+# Editor/OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Gradio/Local artifacts
+.gradio/
+
+# App logs and runtime files
+/gpt-oss-web/backend.log
+/gpt-oss-web/frontend.log
+/gpt-oss-web/gradio.log
+/gpt-oss-web/logs/
+/gpt-oss-web/offload/
+/gpt-oss-web/telemetry.db
+
+# Notebooks
+*.ipynb_checkpoints/
+
+# Env files
+.env
+.env.*

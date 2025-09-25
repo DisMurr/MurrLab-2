@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT-OSS Settings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            color: #4f46e5;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h2 {
+            color: #374151;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .setting-row:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            font-weight: 500;
+            color: #374151;
+        }
+
+        input[type="range"] {
+            width: 150px;
+        }
+
+        input[type="number"] {
+            width: 80px;
+            padding: 5px 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .setting-description {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .status-info {
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .status-info h3 {
+            color: #0369a1;
+            margin-bottom: 10px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+        }
+
+        .btn-group {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .warning {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .warning h3 {
+            color: #92400e;
+            margin-bottom: 10px;
+        }
+
+        .warning p {
+            color: #92400e;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚙️ GPT-OSS Settings</h1>
+        
+        <div class="section">
+            <h2>🤖 Model Status</h2>
+            <div class="status-info" id="statusInfo">
+                <h3>System Information</h3>
+                <div id="statusContent">
+                    Loading system status...
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎛️ Generation Settings</h2>
+            <div class="setting-row">
+                <div>
+                    <label for="maxLength">Max Response Length</label>
+                    <div class="setting-description">Maximum tokens to generate</div>
+                </div>
+                <input type="number" id="maxLength" value="256" min="10" max="1024">
+            </div>
+            
+            <div class="setting-row">
+                <div>
+                    <label for="temperature">Temperature</label>
+                    <div class="setting-description">Controls randomness (0.1 = focused, 2.0 = creative)</div>
+                </div>
+                <input type="range" id="temperature" min="0.1" max="2.0" step="0.1" value="1.0">
+                <span id="tempValue">1.0</span>
+            </div>
+            
+            <div class="setting-row">
+                <div>
+                    <label for="topP">Top P</label>
+                    <div class="setting-description">Nucleus sampling (0.1 = restrictive, 1.0 = all tokens)</div>
+                </div>
+                <input type="range" id="topP" min="0.1" max="1.0" step="0.05" value="0.9">
+                <span id="topPValue">0.9</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔧 Model Management</h2>
+            <div class="btn-group">
+                <button class="btn" onclick="testModel()">🧪 Test Model</button>
+                <button class="btn btn-secondary" onclick="clearMemory()">🗑️ Clear GPU Memory</button>
+                <button class="btn btn-secondary" onclick="reloadModel()">🔄 Reload Model</button>
+            </div>
+            
+            <div class="warning">
+                <h3>⚠️ Memory Management</h3>
+                <p>If you encounter memory errors, try clearing GPU memory or reducing the response length. The model uses approximately 16GB of GPU memory when fully loaded.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📝 Quick Templates</h2>
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="insertTemplate('explain')">📚 Explain Concept</button>
+                <button class="btn btn-secondary" onclick="insertTemplate('code')">💻 Write Code</button>
+                <button class="btn btn-secondary" onclick="insertTemplate('creative')">✨ Creative Writing</button>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn" onclick="saveSettings()">💾 Save Settings</button>
+            <button class="btn btn-secondary" onclick="window.close()">❌ Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Load system status
+        async function loadStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const status = await response.json();
+                
+                document.getElementById('statusContent').innerHTML = `
+                    <div class="info-row"><strong>Model Status:</strong> <span style="color: ${status.model_loaded ? '#059669' : '#dc2626'}">${status.model_loaded ? '✅ Loaded' : '❌ Not Loaded'}</span></div>
+                    <div class="info-row"><strong>Device:</strong> ${status.device.toUpperCase()}</div>
+                    <div class="info-row"><strong>CUDA Available:</strong> ${status.cuda_available ? '✅ Yes' : '❌ No'}</div>
+                    ${status.gpu_memory ? `<div class="info-row"><strong>GPU Memory:</strong> ${status.gpu_memory}GB</div>` : ''}
+                `;
+            } catch (error) {
+                document.getElementById('statusContent').innerHTML = `
+                    <div class="info-row"><strong>Status:</strong> <span style="color: #dc2626">❌ Connection Error</span></div>
+                `;
+            }
+        }
+
+        // Update range value displays
+        document.getElementById('temperature').addEventListener('input', function() {
+            document.getElementById('tempValue').textContent = this.value;
+        });
+
+        document.getElementById('topP').addEventListener('input', function() {
+            document.getElementById('topPValue').textContent = this.value;
+        });
+
+        // Load settings from localStorage
+        function loadSettings() {
+            const settings = JSON.parse(localStorage.getItem('gptoss_settings') || '{}');
+            
+            if (settings.maxLength) document.getElementById('maxLength').value = settings.maxLength;
+            if (settings.temperature) {
+                document.getElementById('temperature').value = settings.temperature;
+                document.getElementById('tempValue').textContent = settings.temperature;
+            }
+            if (settings.topP) {
+                document.getElementById('topP').value = settings.topP;
+                document.getElementById('topPValue').textContent = settings.topP;
+            }
+        }
+
+        function saveSettings() {
+            const settings = {
+                maxLength: parseInt(document.getElementById('maxLength').value),
+                temperature: parseFloat(document.getElementById('temperature').value),
+                topP: parseFloat(document.getElementById('topP').value)
+            };
+            
+            localStorage.setItem('gptoss_settings', JSON.stringify(settings));
+            alert('✅ Settings saved!');
+        }
+
+        async function testModel() {
+            const testBtn = event.target;
+            testBtn.textContent = '🧪 Testing...';
+            testBtn.disabled = true;
+            
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: 'Hello! Please respond with "Model is working correctly."',
+                        max_length: 50,
+                        temperature: 1.0,
+                        top_p: 0.9
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.response) {
+                    alert('✅ Model test successful!\n\nResponse: ' + data.response);
+                } else {
+                    alert('❌ Model test failed: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                alert('❌ Connection error: ' + error.message);
+            } finally {
+                testBtn.textContent = '🧪 Test Model';
+                testBtn.disabled = false;
+            }
+        }
+
+        function clearMemory() {
+            alert('🗑️ GPU memory clearing is handled automatically during generation.');
+        }
+
+        function reloadModel() {
+            alert('🔄 Model reloading requires restarting the web interface.\n\nPlease restart the Python server.');
+        }
+
+        function insertTemplate(type) {
+            const templates = {
+                explain: 'Please explain the concept of',
+                code: 'Please write Python code to',
+                creative: 'Please write a creative story about'
+            };
+            
+            if (window.opener) {
+                const input = window.opener.document.getElementById('messageInput');
+                if (input) {
+                    input.value = templates[type] + ' ';
+                    input.focus();
+                    window.close();
+                }
+            }
+        }
+
+        // Load on page load
+        window.addEventListener('load', function() {
+            loadStatus();
+            loadSettings();
+        });
+    </script>
+</body>
+</html>
